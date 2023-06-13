@@ -1,20 +1,13 @@
 version: "3.7"
 
 services:
-  ubuntu:
-    image: mgering/ubuntudev:latest
-    build: ubuntu
-    restart: always
-    ports:
-      - "5022:22"  # host:docker for ssh
-    volumes:
-      - gramps_media:/mnt/gramps/media  # persist media files
-
   grampsweb: &grampsweb
-    image: ghcr.io/gramps-project/grampsweb:latest
+    image: mgering/mfg-grampsweb:latest
+    build: mfg-grampsweb
     restart: always
     ports:
       - "8083:5000"  # host:docker
+      - "6022:22" # for ssh/rsync
     environment:
       GRAMPSWEB_TREE: "Gramps Web"  # will create a new tree if not exists
       GRAMPSWEB_CELERY_CONFIG__broker_url: "redis://grampsweb_redis:6379/0"
